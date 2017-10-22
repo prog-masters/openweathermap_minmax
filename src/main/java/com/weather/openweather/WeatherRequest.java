@@ -33,7 +33,7 @@ public class WeatherRequest {
                 case 200:
                     return processResponseNormally(startTime, httpResponse);
                 case 429:
-                    return printErrorAndExit("Too many request to OpenWeatherMap api! You have to wait.");
+                    return printErrorAndExit("Too many request to OpenWeatherMap api! You have to wait or register another api key.");
                 default:
                     return printErrorAndExit("OpenWeatherMap api returned " + httpStatusCode + " http code. ");
             }
