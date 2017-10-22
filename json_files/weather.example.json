@@ -1,0 +1,47 @@
+{
+  "coord": {
+    "lon": 18.31,
+    "lat": 47.49
+  },
+  "weather": [
+    {
+      "id": 741,
+      "main": "Fog",
+      "description": "fog",
+      "icon": "50n"
+    },
+    {
+      "id": 701,
+      "main": "Mist",
+      "description": "mist",
+      "icon": "50n"
+    }
+  ],
+  "base": "stations",
+  "main": {
+    "temp": 9.07,
+    "pressure": 1018,
+    "humidity": 100,
+    "temp_min": 8,
+    "temp_max": 10
+  },
+  "visibility": 550,
+  "wind": {
+    "speed": 1.5
+  },
+  "clouds": {
+    "all": 20
+  },
+  "dt": 1508611500,
+  "sys": {
+    "type": 1,
+    "id": 5729,
+    "message": 0.0036,
+    "country": "HU",
+    "sunrise": 1508562918,
+    "sunset": 1508600783
+  },
+  "id": 3046888,
+  "name": "Oroszlany",
+  "cod": 200
+}
