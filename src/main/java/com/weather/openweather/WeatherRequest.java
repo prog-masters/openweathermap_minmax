@@ -3,10 +3,11 @@ package com.weather.openweather;
 import com.google.gson.Gson;
 import com.weather.openweather.json.city.City;
 import com.weather.openweather.json.temperature.Weather;
-import org.apache.http.client.fluent.Content;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.client.fluent.Response;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class WeatherRequest {
@@ -21,33 +22,20 @@ public class WeatherRequest {
 
     public Weather getResponse() {
         try {
-            String url = getUrl();
+            String url = generateUrl();
 
             long startTime = System.currentTimeMillis();
 
             Response response = Request.Get(url).execute();
-            int httpStatusCode = response.returnResponse().getStatusLine().getStatusCode();
-            if (httpStatusCode == 200) {
-
-                Content content = response.returnContent();
-                String responseBodyContent = content.toString();
-                System.out.println(responseBodyContent);
-
-                long finishedTime = System.currentTimeMillis();
-
-                Weather weather = new Gson().fromJson(responseBodyContent, Weather.class);
-
-                System.out.println(weather + " Response time: " + (finishedTime - startTime) + "ms. ");
-
-                return weather;
-            } else if (httpStatusCode == 429) {
-                System.out.println("Too many request to OpenWeatherMap api! You have to wait.");
-                System.exit(-1);
-                return null;
-            } else {
-                System.out.println("OpenWeatherMap api returned " + httpStatusCode + " http code. ");
-                System.exit(-1);
-                return null;
+            HttpResponse httpResponse = response.returnResponse();
+            int httpStatusCode = httpResponse.getStatusLine().getStatusCode();
+            switch (httpStatusCode) {
+                case 200:
+                    return processResponseNormally(startTime, httpResponse);
+                case 429:
+                    return printErrorAndExit("Too many request to OpenWeatherMap api! You have to wait.");
+                default:
+                    return printErrorAndExit("OpenWeatherMap api returned " + httpStatusCode + " http code. ");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -55,13 +43,32 @@ public class WeatherRequest {
         }
     }
 
-    private String getUrl() {
-        String url = "";
+
+    private String generateUrl() {
+        String url;
         url = URL.replace("[API_KEY]", API_KEY);
         url = url.replace("[CITY_ID]", city.getId());
         return url;
     }
 
-    ;
+    private Weather processResponseNormally(long startTime, HttpResponse httpResponse) throws IOException {
+        ByteArrayOutputStream outstream = new ByteArrayOutputStream();
+        httpResponse.getEntity().writeTo(outstream);
+        String responseBodyContent = new String(outstream.toByteArray());
+        System.out.println(responseBodyContent);
+
+        long finishedTime = System.currentTimeMillis();
+
+        Weather weather = new Gson().fromJson(responseBodyContent, Weather.class);
+
+        System.out.println(weather + " Response time: " + (finishedTime - startTime) + "ms. ");
+        return weather;
+    }
+
+    private Weather printErrorAndExit(String x) {
+        System.out.println(x);
+        System.exit(-1);
+        return null;
+    }
 
 }
