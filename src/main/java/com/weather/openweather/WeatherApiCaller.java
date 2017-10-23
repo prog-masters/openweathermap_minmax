@@ -10,19 +10,14 @@ import org.apache.http.client.fluent.Response;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-public class WeatherRequest {
+public class WeatherApiCaller {
 
     private final static String URL = "http://api.openweathermap.org/data/2.5/weather?id=[CITY_ID]&units=metric&appid=[API_KEY]";
     private final static String API_KEY = "<Your API key comes here>";
-    private final City city;
 
-    public WeatherRequest(City city) {
-        this.city = city;
-    }
-
-    public Weather getResponse() {
+    public Weather callWeatherApi(City city) {
         try {
-            String url = generateUrl();
+            String url = generateUrl(city.getId());
 
             long startTime = System.currentTimeMillis();
 
@@ -44,10 +39,10 @@ public class WeatherRequest {
     }
 
 
-    private String generateUrl() {
+    private String generateUrl(String cityId) {
         String url;
         url = URL.replace("[API_KEY]", API_KEY);
-        url = url.replace("[CITY_ID]", city.getId());
+        url = url.replace("[CITY_ID]", cityId);
         return url;
     }
 
@@ -55,7 +50,6 @@ public class WeatherRequest {
         ByteArrayOutputStream outstream = new ByteArrayOutputStream();
         httpResponse.getEntity().writeTo(outstream);
         String responseBodyContent = new String(outstream.toByteArray());
-        System.out.println(responseBodyContent);
 
         long finishedTime = System.currentTimeMillis();
 

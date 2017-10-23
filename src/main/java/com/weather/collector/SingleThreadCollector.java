@@ -10,7 +10,7 @@ public class SingleThreadCollector implements TemperatureCollector {
     public void checkAndCollectTemperatures(List<City> cities, MinMaxValues minMaxToRefresh) {
 
         for (City city : cities) {
-            new TempMinMaxCollectorTask(city, minMaxToRefresh).run();
+            new TemperatureCollectorTask(city, minMaxToRefresh).run();
         }
         System.out.println("RESULT: \n" + minMaxToRefresh);
 

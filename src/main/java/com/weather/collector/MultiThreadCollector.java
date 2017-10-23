@@ -16,7 +16,7 @@ public class MultiThreadCollector implements TemperatureCollector {
     public void checkAndCollectTemperatures(List<City> cities, MinMaxValues minMaxToRefresh) {
 
         for (City city : cities) {
-            executor.submit(new TempMinMaxCollectorTask(city, minMaxToRefresh));
+            executor.submit(new TemperatureCollectorTask(city, minMaxToRefresh));
         }
 
         finishAndPrintResult(minMaxToRefresh);

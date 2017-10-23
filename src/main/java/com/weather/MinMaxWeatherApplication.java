@@ -14,48 +14,46 @@ import java.util.List;
  */
 class MinMaxWeatherApplication {
 
-    private List<City> hungarianCities;
-
-    private MinMaxValues minMaxValues = new MinMaxValues();
+    private final MinMaxValues minMaxValues = new MinMaxValues();
 
     public static void main(String[] args) {
-        MinMaxWeatherApplication app = new MinMaxWeatherApplication();
 
-        app.start();
+        new MinMaxWeatherApplication().start();
     }
 
     private void start() {
+
 
         MinMaxHttpServer minMaxHttpServer = new MinMaxHttpServer();
         minMaxHttpServer.start(minMaxValues);
 
         System.out.println("Start reading cities from file...");
-        hungarianCities = new CityReaderFromJson().readCitiesForCountry("hu");
+        List<City> cities = new CityReaderFromJson().readCitiesForCountry("hu");
 
-        collectInSingleThread();
+        collectInSingleThread(cities);
 
-        collectInMultiThread();
+        collectInMultiThread(cities);
 
     }
 
-    private void collectInSingleThread() {
+    private void collectInSingleThread(List<City> cities) {
         System.out.println("\n----------------------------------------------");
         System.out.println(" Start requesting temperatures one by one...");
         System.out.println("----------------------------------------------");
         long messaureTime = System.currentTimeMillis();
 
-        new SingleThreadCollector().checkAndCollectTemperatures(hungarianCities, minMaxValues);
+        new SingleThreadCollector().checkAndCollectTemperatures(cities, minMaxValues);
 
         System.out.println("Finished in " + (System.currentTimeMillis() - messaureTime) + "ms.");
     }
 
-    private void collectInMultiThread() {
+    private void collectInMultiThread(List<City> cities) {
         System.out.println("\n-------------------------------------------------------------");
         System.out.println(" Start requesting temperatures parallely (" + MultiThreadCollector.PARALLEL_THREADS + " at once)...");
         System.out.println("-------------------------------------------------------------");
         long messaureTime = System.currentTimeMillis();
 
-        new MultiThreadCollector().checkAndCollectTemperatures(hungarianCities, minMaxValues);
+        new MultiThreadCollector().checkAndCollectTemperatures(cities, minMaxValues);
 
         System.out.println("Finished in " + (System.currentTimeMillis() - messaureTime) + "ms.");
     }
