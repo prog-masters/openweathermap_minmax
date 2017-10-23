@@ -26,8 +26,9 @@ public class MultiThreadCollector implements TemperatureCollector {
     private void finishAndPrintResult(MinMaxValues minMax) {
         try {
             executor.shutdown();
-            boolean finishedInTime = false;
-            finishedInTime = executor.awaitTermination(1, TimeUnit.MINUTES);
+
+            boolean finishedInTime = executor.awaitTermination(1, TimeUnit.MINUTES);
+
             if (finishedInTime) {
                 System.out.println("RESULT: \n" + minMax);
             } else {

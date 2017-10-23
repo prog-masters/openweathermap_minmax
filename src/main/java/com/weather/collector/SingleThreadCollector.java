@@ -7,12 +7,12 @@ import java.util.List;
 public class SingleThreadCollector implements TemperatureCollector {
 
     @Override
-    public void checkAndCollectTemperatures(List<City> cities, MinMaxValues minMaxToRefresh) {
+    public void checkAndCollectTemperatures(List<City> cities, MinMaxValues minMax) {
 
         for (City city : cities) {
-            new TemperatureCollectorTask(city, minMaxToRefresh).run();
+            new TemperatureCollectorTask(city, minMax).run();
         }
-        System.out.println("RESULT: \n" + minMaxToRefresh);
+        System.out.println("RESULT: \n" + minMax);
 
     }
 }

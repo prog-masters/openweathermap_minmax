@@ -1,0 +1,16 @@
+{
+  "minTempWeather": {
+    "main": {
+      "temp": 8.2
+    },
+    "id": 3046526,
+    "name": "Pecs"
+  },
+  "maxTempWeather": {
+    "main": {
+      "temp": 11
+    },
+    "id": 717771,
+    "name": "Mateszalka"
+  }
+}

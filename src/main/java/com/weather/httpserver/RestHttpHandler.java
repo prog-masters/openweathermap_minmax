@@ -20,22 +20,22 @@ public class RestHttpHandler implements HttpHandler {
     }
 
     @Override
-    public void handle(HttpExchange t) throws IOException {
+    public void handle(HttpExchange httpExchange) throws IOException {
         String response;
-        if (t.getRequestURI().toString().equals("/stop")) {
-            sendResponse(t, "{\"message\": \"Server is closing...\"}");
+        if (httpExchange.getRequestURI().toString().equals("/stop")) {
+            sendResponse(httpExchange, "{\"message\": \"Server is closing...\"}");
             httpServer.stop(1);
             System.out.println("Server stopped.");
 
         } else {
-            sendResponse(t, gson.toJson(minMaxValues));
+            sendResponse(httpExchange, gson.toJson(minMaxValues));
         }
     }
 
-    private void sendResponse(HttpExchange t, String response) throws IOException {
-        t.getResponseHeaders().add("Content-type", "application/json");
-        t.sendResponseHeaders(200, response.getBytes().length);
-        OutputStream os = t.getResponseBody();
+    private void sendResponse(HttpExchange httpExchange, String response) throws IOException {
+        httpExchange.getResponseHeaders().add("Content-type", "application/json");
+        httpExchange.sendResponseHeaders(200, response.getBytes().length);
+        OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes());
         os.close();
     }
