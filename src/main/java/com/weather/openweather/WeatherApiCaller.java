@@ -13,7 +13,7 @@ import java.io.IOException;
 public class WeatherApiCaller {
 
     private final static String URL = "http://api.openweathermap.org/data/2.5/weather?id=[CITY_ID]&units=metric&appid=[API_KEY]";
-    private final static String API_KEY = "6982f1411477b9a2038228cd2c2e16b1";
+    private final static String API_KEY = "<Your API key comes here>";
 
     public Weather callWeatherApi(City city) {
         try {
